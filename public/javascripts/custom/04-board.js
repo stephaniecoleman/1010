@@ -42,7 +42,8 @@ Board.prototype.createSquares = function(column, height) {
   var html = ""
   for (var row = 0; row < height; row++) {
     var square = new Square(column, row);
-    html += '<div class="square" data-x=' + column + ' data-y=' + row + '>' + square.html() + '</div>';
+
+    html += square.html();
   }
   return html;
 }
