@@ -1,0 +1,67 @@
+html, body { 
+  height: 100%; 
+}
+
+.active {
+  background-color: #EEE;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+}
+
+.square {
+  margin: 0 auto 5%;
+  height: 0;
+  width: 95%;
+  padding-bottom: 95%; /* = width for a 1:1 aspect ratio */
+  background-color: #eee;
+  border-radius: 5px; 
+}
+
+#board, #shapes {
+  margin-bottom: 1%;
+}
+
+.column {
+  padding: 0%;
+  width: 5%;
+}
+
+.jumbotron {
+  margin: 1%;
+  padding: 1% 1%;
+}
+
+.green {
+  color: #5BC99A;
+}
+
+.blue {
+  color: #6F8AC1;
+}
+
+.purple {
+  color: #B1437B;
+}
+
+.red {
+  color: #FF0048;
+}
+
+.yellow {
+  color: #FFD154;
+}

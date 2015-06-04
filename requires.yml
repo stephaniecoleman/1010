@@ -1,0 +1,14 @@
+# A list of javascript files required for the project, in dependency order
+javascripts:
+  files:
+    - public/javascripts/lib/jquery.min.js
+    - public/javascripts/lib/bootstrap.min.js
+    - public/javascripts/custom/01-prevent-text-highlighting.js
+    - public/javascripts/custom/02-helper-functions.js
+    - public/javascripts/custom/03-square.js
+    - public/javascripts/custom/04-board.js
+    - public/javascripts/custom/05-builder.js
+  specs:
+    - spec/jasmine-jquery.js
+    - spec/jquery-ui.min.js
+    - spec/1010.spec.js
