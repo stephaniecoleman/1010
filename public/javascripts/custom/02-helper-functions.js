@@ -1,16 +1,15 @@
-function sample(array) {
-  var random = array[Math.floor(Math.random()*array.length)];
-  return random;
-}
+Array.prototype.elementIncluded = function(element) {
+	return this.indexOf(element) > -1;
+};
 
-function elementIncluded(array, element) {
-  return array.indexOf(element) > -1;
-}
+Array.prototype.getLastElement = function() {
+	return this[this.length - 1];
+};
 
-function getLastElement(array) {
-  return array[array.length - 1];
-}
+Array.prototype.deleteAt = function(index) {
+	return this.splice(index, 1);
+};
 
-function deleteAt(array, index) {
-  array.splice(index, 1);
+Array.prototype.random = function () {
+  return this[Math.floor(Math.random() * this.length)];
 }

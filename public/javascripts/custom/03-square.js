@@ -1,9 +1,10 @@
-function Square(x, y) {
+function Square(x, y, type) {
 	this.x = x;
 	this.y = y;
+	this.color = "grey";
+	this.type = type
 }
 
 Square.prototype.html = function() {
-	return '<div class="square" data-x=' + this.x + ' data-y=' + this.y + '></div>'
-	// return '<div class="square" data-x=' + this.x + ' data-y=' + this.y + '>' + this.x + "," + this.y + '</div>'
+	return '<div class="square ' + this.type + '" data-color="' + this.color + '" data-x=' + this.x + ' data-y=' + this.y + '></div>'
 };

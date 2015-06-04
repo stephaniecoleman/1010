@@ -2,10 +2,6 @@ html, body {
   height: 100%; 
 }
 
-.active {
-  background-color: #EEE;
-}
-
 .noselect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -15,12 +11,12 @@ html, body {
   user-select: none;
 }
 .row-centered {
-    text-align: center;
+  text-align: center;
 }
 
 .col-centered {
-    display: inline-block;
-    float: none;
+  display: inline-block;
+  float: none;
 }
 
 .square {
@@ -28,7 +24,6 @@ html, body {
   height: 0;
   width: 95%;
   padding-bottom: 95%; /* = width for a 1:1 aspect ratio */
-  background-color: #eee;
   border-radius: 5px; 
 }
 
@@ -46,22 +41,26 @@ html, body {
   padding: 1% 1%;
 }
 
-.green {
-  color: #5BC99A;
+[data-color='green'] {
+  background-color: #5BC99A;
 }
 
-.blue {
-  color: #6F8AC1;
+[data-color='blue'] {
+  background-color: #6F8AC1;
 }
 
-.purple {
-  color: #B1437B;
+[data-color='purple'] {
+  background-color: #B1437B;
 }
 
-.red {
-  color: #FF0048;
+[data-color='red'] {
+  background-color: #FF0048;
 }
 
-.yellow {
-  color: #FFD154;
+[data-color='yellow'] {
+  background-color: #FFD154;
+}
+
+[data-color='grey'] {
+  background-color: #eee;
 }

@@ -7,7 +7,8 @@ javascripts:
     - public/javascripts/custom/02-helper-functions.js
     - public/javascripts/custom/03-square.js
     - public/javascripts/custom/04-board.js
-    - public/javascripts/custom/05-builder.js
+    - public/javascripts/custom/05-game.js
+    - public/javascripts/custom/06-builder.js
   specs:
     - spec/jasmine-jquery.js
     - spec/jquery-ui.min.js
