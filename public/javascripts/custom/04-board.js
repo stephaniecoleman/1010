@@ -6,6 +6,7 @@ Board.prototype.init = function() {
   this.shapeBoxHeight = 5;
   this.shapeBoxWidth = 17;
   this.renderHTML();
+  this.addListeners();
 }
 
 Board.prototype.renderHTML = function() {
@@ -15,7 +16,6 @@ Board.prototype.renderHTML = function() {
   $('#board').append(boardHTML);
   $('#shapes').append(shapesHTML);
   $('#shapes').append(backgroundHTML);
-  this.addListeners();
 }
 
 Board.prototype.createBackgroundShapes = function() {
