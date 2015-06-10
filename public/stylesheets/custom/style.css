@@ -27,6 +27,32 @@ html, body {
   border-radius: 5px; 
 }
 
+.background {
+  background-color: #eee;
+}
+
+.front {
+  width: 100%;
+
+  position: absolute;
+  z-index: 1;
+}
+
+.back {
+  width: 100%;
+
+  position: absolute;
+  z-index: 0;
+}
+
+.ui-draggable {
+  z-index: 2;
+}
+
+row {
+  position: relative;
+}
+
 #board, #shapes {
   margin-bottom: 1%;
 }
@@ -63,4 +89,12 @@ html, body {
 
 [data-color='grey'] {
   background-color: #eee;
+}
+
+[data-color='clear'] {
+  visibility: hidden;
+}
+
+.bleh {
+  background-color: black;
 }

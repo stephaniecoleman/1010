@@ -1,7 +1,7 @@
-function Square(x, y, type) {
+function Square(x, y, type, color) {
 	this.x = x;
 	this.y = y;
-	this.color = "grey";
+	this.color = color || "grey";
 	this.type = type
 }
 

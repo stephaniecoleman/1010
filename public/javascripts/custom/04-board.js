@@ -11,9 +11,30 @@ Board.prototype.init = function() {
 Board.prototype.renderHTML = function() {
   var boardHTML = this.createBoardColumns();
   var shapesHTML = this.createShapesColumns();
+  var backgroundHTML = this.createBackgroundShapes();
   $('#board').append(boardHTML);
   $('#shapes').append(shapesHTML);
+  $('#shapes').append(backgroundHTML);
+  this.addListeners();
 }
+
+Board.prototype.createBackgroundShapes = function() {
+  var startHTML = '<div class="row row-centered back">';
+  var middleHTML = '';
+  for (var col = 0; col < 5; col++) {
+    middleHTML += '<div class="column col-md-1 col-sm-1 col-xs-1 col-centered">'+ this.createBackgroundSquares(col, this.shapeBoxHeight) + '</div>';
+  }
+  var endHTML = '</div>';
+  return startHTML + middleHTML + endHTML;
+};
+
+Board.prototype.createBackgroundSquares = function(column, height) {
+  var html = ""
+  for (var row = 0; row < height; row++) {
+    html += '<div class="square background"></div>';
+  }
+  return html;
+};
 
 Board.prototype.createBoardColumns = function() {
   var startHTML = '<div class="row row-centered">';
@@ -27,25 +48,28 @@ Board.prototype.createBoardColumns = function() {
 
 // This is the same as createBoardColumns, essentially. Need to refactor with parameters to make more DRY.
 Board.prototype.createShapesColumns = function() {
-  var startHTML = '<div class="row row-centered">';
+  var startHTML = '<div class="row row-centered front draggable">';
   var middleHTML = '';
-  for (var col = 0; col < this.shapeBoxWidth; col++) {
-    middleHTML += '<div class="column col-md-1 col-sm-1 col-xs-1 col-centered">'+ this.createSquares(col, this.shapeBoxHeight, "shape") + '</div>';
+  for (var col = 0; col < 5; col++) {
+    middleHTML += '<div class="column col-md-1 col-sm-1 col-xs-1 col-centered">'+ this.createSquares(col, this.shapeBoxHeight, "shape", "clear") + '</div>';
   }
   var endHTML = '</div>';
   return startHTML + middleHTML + endHTML;
 };
 
-Board.prototype.createSquares = function(column, height, type) {
+Board.prototype.createSquares = function(column, height, type, color) {
   var html = ""
   for (var row = 0; row < height; row++) {
-    var square = new Square(column, row, type);
+    var square = new Square(column, row, type, color);
     html += square.html();
   }
   return html;
 }
 
 Board.prototype.addListeners = function() {
+  $('.square.game').addClass("droppable");
+  $('.draggable').draggable();
+
 }
 
 Board.prototype.removeAllListeners = function() {

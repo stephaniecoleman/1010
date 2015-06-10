@@ -19,14 +19,14 @@ Game.prototype.generateShape = function() {
 	var shape = new Shape;
 	var color = shape.color;
 	var coords = shape.coordinates;
-	this.colorShapeBoxes(color, coords);
+	this.colorShapeBoxes(coords, color);
 };
 
 // this needs a start coordinate, but I took it out for now.
-Game.prototype.colorShapeBoxes = function(color, coords) {
+Game.prototype.colorShapeBoxes = function(coords, color) {
 	for(var x = 0; x < coords.length; x++) {
 		var xCell = coords[x][0];
 		var yCell = coords[x][1];
-		$('.shape[data-x=' + xCell + '][data-y=' + yCell + ']').attr("data-color", color)
+		$('.shape[data-x=' + xCell + '][data-y=' + yCell + ']').attr("data-color", color)	;	
 	}
 };
