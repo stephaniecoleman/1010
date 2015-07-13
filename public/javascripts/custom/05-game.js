@@ -52,7 +52,6 @@ Game.prototype.checkCells = function(line) {
 	return clearMe;	
 };
 
-
 Game.prototype.clearCells = function(line) {
 	$(line).each(function() {
 		$(this).animate({
@@ -117,16 +116,8 @@ Game.prototype.addDroppableListener = function() {
 		tolerance: "pointer",	
 		hoverClass: "bleh",
     drop: function(e, ui) {
-    	// this will first calculate whether there are open spots, then write legitMove to false or true 
-
-    	// (this gives us ui.offset, which contains position relative to the document. could be useful! An object that contains the position of the dragged element or helper, relative to the document. As with position, the object has left and top properties.)
-
-    	// reset revert to false and legitMove to true. 
 			ui.draggable.draggable('option', 'revert', false);
 			self.legitMove = true;
-
-			// make original item invisible
-
 			var droppedOn = $(this);
 			self.getEndingCoords(droppedOn);
 			self.getDelta();
