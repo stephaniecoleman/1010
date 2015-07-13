@@ -1,7 +1,6 @@
 function Game() {}
 
 Game.prototype.init = function(board) {
-	this.turn = 0;
 	this.currentColor = null;
 	this.legitMove = true;
 	this.board = board;
