@@ -6,7 +6,6 @@ Board.prototype.init = function() {
   this.shapeBoxHeight = 5;
   this.shapeBoxWidth = 17;
   this.renderHTML();
-  this.addListeners();
 }
 
 Board.prototype.renderHTML = function() {
@@ -67,9 +66,6 @@ Board.prototype.createSquares = function(column, height, type, color) {
 }
 
 Board.prototype.addListeners = function() {
-  $('.square.game').addClass("droppable");
-  $('.draggable').draggable();
-
 }
 
 Board.prototype.removeAllListeners = function() {
