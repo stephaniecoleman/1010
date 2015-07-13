@@ -8,24 +8,62 @@ Game.prototype.init = function(board) {
 	this.startingCoords = null;
 	this.endingCoords = null;
 	this.delta = null;
-	this.createState();
+	this.score = 0;
+	// this.createState();
+	this.addDroppableListener();
+	this.addDraggableListener();
 	this.doTurn();
 }
 
 Game.prototype.doTurn = function() {
+	this.legitMove = false;
+	this.checkForHorLine();
+	this.checkForVertLine();
 	this.generateShape();
 	this.getStartingCoords();
-	this.addDroppableListener();
-	this.addDraggableListener();
-	// this.generateShape();
 };
 
-Game.prototype.createState = function() {
-	var arr = [];
-	for(var i = 0; i < 100; i++) {
-		arr.push({});
+Game.prototype.checkForHorLine = function() {
+	var self = this;
+	for (var i = 0; i < this.board.gameHeight; i++) {
+		var row = $('.square.game[data-y=' + i + ']');
+		if (self.checkCells(row)) {
+			self.clearCells(row);
+		}
 	}
-	this.state = arr;
+};
+
+Game.prototype.checkCells = function(line) {
+	var clearMe = true;
+	$(line).each(function() {
+		if ($(this).attr("data-color") === "grey") {
+			clearMe = false;
+			return false;
+		}
+	})
+	return clearMe;	
+};
+
+
+Game.prototype.checkForVertLine = function() {
+	var self = this;
+	$('.gaming .column').each(function() {
+		if (self.checkCells(this.children)) {
+			self.clearCells(this.children);
+		}
+	})
+};
+
+Game.prototype.clearCells = function(line) {
+	$(line).each(function() {
+		$(this).animate({
+			backgroundColor: '#eee'
+		}, 500, function(){
+			$(this).css('background-color', '');
+			$(this).attr("data-color", "grey");
+		});
+	})
+	this.score += 1;
 };
 
 Game.prototype.generateShape = function() {
@@ -53,8 +91,6 @@ Game.prototype.getStartingCoords = function() {
 	});
 };
 
-// When using 'clone' or a function to create a helper, the helper is destroyed when the drag operation stops. However, you can use the stop event (see Events: Responding to drags) to retrieve information about the helper — such as its position — before it's destroyed.
-
 Game.prototype.addDraggableListener = function() {
 	var self = this;
 	$('.draggable').draggable({
@@ -62,10 +98,16 @@ Game.prototype.addDraggableListener = function() {
 		helper: "clone",
 		// appendTo: ".the-game",
 		revert: false,
-		drag: function(e, ui){
-			// $('.ui-draggable-helper').css('visibility', 'hidden');
+		drag: function(e, ui) {
+			// drag - make original invisible 
+			$('.front:not(".ui-draggable-dragging") .shape').css('visibility', 'hidden');
+		},
+		stop: function(e, ui) {
+			// make original visible if invalid move
+			if (self.legitMove == false) {
+				$('.front:not(".ui-draggable-dragging") .shape').css('visibility', 'visible');
+			}
 		}
-		// drag - make original invisible 
   });
 };
 
@@ -88,47 +130,41 @@ Game.prototype.addDroppableListener = function() {
 
 			var droppedOn = $(this);
 			self.getEndingCoords(droppedOn);
+			self.getDelta();
     	var shapeSquares = self.addSelectedClass(ui.helper);
-    	self.getDelta();
-
+  		self.legitMove = true;
     	// add delta to each coord
     	shapeSquares.each(function(index) {
     		var correspondingX = $(this).data('x') + self.delta[0];
     		var correspondingY = $(this).data('y') + self.delta[1];
     		var correspondingSquare = self.getjQuerySquare(correspondingX, correspondingY);
     		if (correspondingSquare.attr("data-color") != "grey") {
-    			self.legitMove = false;
-    			return ui.draggable.draggable('option', 'revert', true);
+    			return self.legitMove = false;
     		}
     	});
+
     	if (self.legitMove == true) {
+    		// make original visible
+    		$('.front:not(".ui-draggable-dragging") .square.shape').css('visibility', 'visible');
+
+    		// change original to clear
+				$('.front:not(".ui-draggable-dragging") .square.shape').attr('data-color', 'clear')
+
     		shapeSquares.each(function(){
     			var correspondingX = $(this).data('x') + self.delta[0];
     			var correspondingY = $(this).data('y') + self.delta[1];
-    			console.log("x is " + correspondingX + " y is " + correspondingY);
+    			// change new location to color of shape
     			$('.game[data-x="' + correspondingX + '"][data-y="' + correspondingY + '"]').attr("data-color", self.currentColor);
-
     		});
+    		self.doTurn();
     	}
     }
-    	// go through each $('.shape') and check if the square delta away is grey
 	});
 };
 
 Game.prototype.getjQuerySquare = function(x, y) {
 	return $('.game[data-x="' + x + '"][data-y="' + y + '"]');
 };
-
-// Game.prototype.handleShapeDrop = function(e, ui) {
-// 	debugger;
-// 	var droppedOn = $(this);
-// 	// this.addSelectedClass(ui.helper);
-// 	// this.getEndingCoords(droppedOn);
-// 	// this.getDelta();
-// 	// if it's a legit move...
-// 	// ui.draggable.draggable('option', 'revert', false);
-
-// };
 
 Game.prototype.addSelectedClass = function(jQueryElement) {
   jQueryElement.children().children().each(function() {
@@ -150,5 +186,3 @@ Game.prototype.getDelta = function() {
 	var deltaY = this.endingCoords[1] - this.startingCoords[1];
 	this.delta = [deltaX, deltaY];
 };
-
-
