@@ -65,9 +65,7 @@ Board.prototype.createSquares = function(column, height, type, color) {
   return html;
 }
 
-Board.prototype.addListeners = function() {
-}
-
-Board.prototype.removeAllListeners = function() {
-  $('.square').unbind();
-}
+Board.prototype.updateScore = function(score) {
+  var html = '<p>Score: ' + score + '</p>';
+  $('.score').html(html);
+};

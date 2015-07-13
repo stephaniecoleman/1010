@@ -9,7 +9,6 @@ Game.prototype.init = function(board) {
 	this.endingCoords = null;
 	this.delta = null;
 	this.score = 0;
-	// this.createState();
 	this.addDroppableListener();
 	this.addDraggableListener();
 	this.doTurn();
@@ -19,6 +18,7 @@ Game.prototype.doTurn = function() {
 	this.legitMove = false;
 	this.checkForHorLine();
 	this.checkForVertLine();
+	this.board.updateScore(this.score);
 	this.generateShape();
 	this.getStartingCoords();
 };
@@ -33,6 +33,15 @@ Game.prototype.checkForHorLine = function() {
 	}
 };
 
+Game.prototype.checkForVertLine = function() {
+	var self = this;
+	$('.the-game .column').each(function() {
+		if (self.checkCells(this.children)) {
+			self.clearCells(this.children);
+		}
+	})
+};
+
 Game.prototype.checkCells = function(line) {
 	var clearMe = true;
 	$(line).each(function() {
@@ -44,15 +53,6 @@ Game.prototype.checkCells = function(line) {
 	return clearMe;	
 };
 
-
-Game.prototype.checkForVertLine = function() {
-	var self = this;
-	$('.gaming .column').each(function() {
-		if (self.checkCells(this.children)) {
-			self.clearCells(this.children);
-		}
-	})
-};
 
 Game.prototype.clearCells = function(line) {
 	$(line).each(function() {
