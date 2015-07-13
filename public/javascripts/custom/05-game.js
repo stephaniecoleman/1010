@@ -6,23 +6,62 @@ Game.prototype.init = function(board) {
 	this.startingCoords = null;
 	this.endingCoords = null;
 	this.delta = null;
-	this.createState();
+	this.score = 0;
+	// this.createState();
+	this.addDroppableListener();
+	this.addDraggableListener();
 	this.doTurn();
 }
 
 Game.prototype.doTurn = function() {
+	this.legitMove = false;
+	this.checkForHorLine();
+	this.checkForVertLine();
 	this.generateShape();
 	this.getStartingCoords();
-	this.addDroppableListener();
-	this.addDraggableListener();
 };
 
-Game.prototype.createState = function() {
-	var arr = [];
-	for(var i = 0; i < 100; i++) {
-		arr.push({});
+Game.prototype.checkForHorLine = function() {
+	var self = this;
+	for (var i = 0; i < this.board.gameHeight; i++) {
+		var row = $('.square.game[data-y=' + i + ']');
+		if (self.checkCells(row)) {
+			self.clearCells(row);
+		}
 	}
-	this.state = arr;
+};
+
+Game.prototype.checkCells = function(line) {
+	var clearMe = true;
+	$(line).each(function() {
+		if ($(this).attr("data-color") === "grey") {
+			clearMe = false;
+			return false;
+		}
+	})
+	return clearMe;	
+};
+
+
+Game.prototype.checkForVertLine = function() {
+	var self = this;
+	$('.gaming .column').each(function() {
+		if (self.checkCells(this.children)) {
+			self.clearCells(this.children);
+		}
+	})
+};
+
+Game.prototype.clearCells = function(line) {
+	$(line).each(function() {
+		$(this).animate({
+			backgroundColor: '#eee'
+		}, 500, function(){
+			$(this).css('background-color', '');
+			$(this).attr("data-color", "grey");
+		});
+	})
+	this.score += 1;
 };
 
 Game.prototype.generateShape = function() {
@@ -58,10 +97,16 @@ Game.prototype.addDraggableListener = function() {
 		helper: "clone",
 		// appendTo: ".the-game",
 		revert: false,
-		drag: function(e, ui){
-			// $('.ui-draggable-helper').css('visibility', 'hidden');
+		drag: function(e, ui) {
+			// drag - make original invisible 
+			$('.front:not(".ui-draggable-dragging") .shape').css('visibility', 'hidden');
+		},
+		stop: function(e, ui) {
+			// make original visible if invalid move
+			if (self.legitMove == false) {
+				$('.front:not(".ui-draggable-dragging") .shape').css('visibility', 'visible');
+			}
 		}
-		// drag - make original invisible 
   });
 };
 
@@ -72,42 +117,37 @@ Game.prototype.addDroppableListener = function() {
 		tolerance: "pointer",	
 		hoverClass: "bleh",
     drop: function(e, ui) {
-    	// this will first calculate whether there are open spots, then write legitMove to false or true 
-
-    	// (this gives us ui.offset, which contains position relative to the document. could be useful! An object that contains the position of the dragged element or helper, relative to the document. As with position, the object has left and top properties.)
-
-    	// reset revert to false and legitMove to true. 
-			ui.draggable.draggable('option', 'revert', false);
-			self.legitMove = true;
-
-			// make original item invisible
-
 			var droppedOn = $(this);
 			self.getEndingCoords(droppedOn);
+			self.getDelta();
     	var shapeSquares = self.addSelectedClass(ui.helper);
-    	self.getDelta();
-
+  		self.legitMove = true;
     	// add delta to each coord
     	shapeSquares.each(function(index) {
     		var correspondingX = $(this).data('x') + self.delta[0];
     		var correspondingY = $(this).data('y') + self.delta[1];
     		var correspondingSquare = self.getjQuerySquare(correspondingX, correspondingY);
     		if (correspondingSquare.attr("data-color") != "grey") {
-    			self.legitMove = false;
-    			return ui.draggable.draggable('option', 'revert', true);
+    			return self.legitMove = false;
     		}
     	});
+
     	if (self.legitMove == true) {
+    		// make original visible
+    		$('.front:not(".ui-draggable-dragging") .square.shape').css('visibility', 'visible');
+
+    		// change original to clear
+				$('.front:not(".ui-draggable-dragging") .square.shape').attr('data-color', 'clear')
+
     		shapeSquares.each(function(){
     			var correspondingX = $(this).data('x') + self.delta[0];
     			var correspondingY = $(this).data('y') + self.delta[1];
-    			console.log("x is " + correspondingX + " y is " + correspondingY);
+    			// change new location to color of shape
     			$('.game[data-x="' + correspondingX + '"][data-y="' + correspondingY + '"]').attr("data-color", self.currentColor);
-
     		});
+    		self.doTurn();
     	}
     }
-    	// go through each $('.shape') and check if the square delta away is grey
 	});
 };
 
