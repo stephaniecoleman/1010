@@ -131,7 +131,7 @@ Game.prototype.getEndingCoords = function(obj) {
 };
 
 Game.prototype.getDelta = function() {
-	var deltaX = this.endingCoords[0] - this.startingCoords[1];
+	var deltaX = this.endingCoords[0] - this.startingCoords[0];
 	var deltaY = this.endingCoords[1] - this.startingCoords[1];
 	this.delta = [deltaX, deltaY];
 };
