@@ -62,6 +62,8 @@ Game.prototype.clearCells = function(line) {
 		});
 	})
 	this.score += 1;
+	// var audio = $('#louis')[0];
+	// audio.play();
 };
 
 Game.prototype.generateShape = function() {
@@ -146,6 +148,7 @@ Game.prototype.addDroppableListener = function() {
     			// change new location to color of shape
     			$('.game[data-x="' + correspondingX + '"][data-y="' + correspondingY + '"]').attr("data-color", self.currentColor);
     		});
+
     		self.doTurn();
     	}
     }
